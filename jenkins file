@@ -1,7 +1,7 @@
 node{
     
 def mavenHome= tool name: "maven3.9.6"
-properties([[$class: 'JobLocalConfiguration', changeReasonComment: '']])
+
 //checkout stage
 stage ('CheckoutCode'){
 git branch: 'development', credentialsId: '3a96c5ae-02c0-49d5-8003-5cbe29c2e319', url: 'https://github.com/ravimannepalli/maven-web-application.git'
