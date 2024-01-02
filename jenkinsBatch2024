@@ -1,7 +1,6 @@
 node{
     
 def mavenHome= tool name: "maven3.9.6"
-properties([[$class: 'JobLocalConfiguration', changeReasonComment: '']])
 properties([[$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
 
 echo "the node name is: "${env.node_name}"
