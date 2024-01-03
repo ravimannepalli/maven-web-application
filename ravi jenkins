@@ -10,12 +10,6 @@ options {
   timestamps()
 }
 
-triggers {
-  cron ('* * * * *')
-  pollSCM ('* * * * *')
-}
-
-
 stages{
 //git code
 stage('checkoout code'){
