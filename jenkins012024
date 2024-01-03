@@ -43,7 +43,7 @@ sh "mvn sonar:sonar"
 //update nexus artifact
 stage('update artifact nexus'){
 steps{
-sh "mvn deploy
+sh "mvn deploy"
 
 }
 }
