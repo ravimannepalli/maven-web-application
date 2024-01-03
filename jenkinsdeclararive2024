@@ -1,0 +1,75 @@
+pipeline{
+
+agent any
+tools{
+maven "maven3.9.6"
+}
+
+options {
+  buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')
+  timestamps()
+}
+
+triggers {
+  cron ('* * * * *')
+  pollSCM ('* * * * *')
+}
+
+stages{
+//git code
+stage('checkoout code'){
+step{
+git branch: 'development', credentialsId: '3a96c5ae-02c0-49d5-8003-5cbe29c2e319', url: 'https://github.com/ravimannepalli/maven-web-application.git'
+}
+}
+
+
+//build stage
+stage('build'){
+step{
+sh "maven clean package"
+
+}
+}
+
+
+//excute sonarqube report
+stage('sonarqube report'){
+steps{
+sh "mvn sonar:sonar"
+}
+}
+
+//update nexus artifact
+stage('update artifact nexus'){
+steps{
+sh "mvn deploy
+
+}
+}
+
+//deploy app into tomcat
+stage('deploy tomcat'){
+steps{
+sshagent(['933be3ff-1d8b-401d-af46-e0bf1164db15']) {
+sh "scp -o strictHostkeyChecking=no target/maven-web-application.war ec2-user@18.232.126.27:/opt/apache-tomcat-9.0.84/webapps"
+
+}
+}
+}
+
+}//stages closing
+
+post {
+  always {
+    // One or more steps need to be included within each condition's block.
+  }
+  success {
+    // One or more steps need to be included within each condition's block.
+  }
+  failure {
+    // One or more steps need to be included within each condition's block.
+  }
+}
+
+}//pipeline closing
